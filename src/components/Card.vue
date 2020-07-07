@@ -15,4 +15,13 @@ export default {
   }
 }
 </script>
-<style></style>
+<style lang="scss" scoped>
+@import '../../public/styles/base/_variables';
+.card {
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  margin: 10px 0;
+  font-family: $f-main-r;
+  cursor: pointer;
+}
+</style>

@@ -1,18 +1,28 @@
 <template>
   <div class="page page--home">
-    {{ Quotes }}
     <section>
       <div class="container">
         <p>Quotes added</p>
         <div class="progress-bar">
-          <div class="progress-bar__line" :style="lineWidth">4/10</div>
+          <div class="progress-bar__line" :style="lineWidth">{{ Quotes.length }}/10</div>
         </div>
 
-        <form @submit.prevent="createQuote">
-          <p>Quotes</p>
-          <textarea name="" class="text-area" v-model="text"></textarea>
-          <button type="submit" class="btn btn-primary mt-2 ml-auto mr-auto">Primary</button>
-        </form>
+        <div class="alert alert-danger mt-2" role="alert" v-if="qoutesFilled">
+          Для добавления новых цитат удалите одну из добавленных
+        </div>
+
+        <ValidationObserver v-slot="{ handleSubmit }">
+          <form @submit.prevent="handleSubmit(createQuote)" class="form">
+            <p>Quotes</p>
+            <ValidationProvider rules="required" v-slot="{ classes, errors }" name="quote">
+              <div class="help-block" :class="classes">
+                <textarea name="" class="text-area" v-model="text"></textarea>
+                <span v-if="errors[0]" class="help-block__msg">{{ errors[0] }}</span>
+              </div>
+            </ValidationProvider>
+            <button type="submit" class="btn btn-primary mt-2 ml-auto mr-auto" :disabled="qoutesFilled">Primary</button>
+          </form>
+        </ValidationObserver>
 
         <div class="row">
           <div class="col-md-3" v-for="(card, i) in Quotes" :key="i">
@@ -47,6 +57,10 @@ export default {
       return {
         width: '90%'
       }
+    },
+
+    qoutesFilled() {
+      return this.Quotes.length === 10
     }
   },
 
@@ -60,7 +74,7 @@ export default {
     ...mapMutations({}),
 
     resetForm() {
-      this.text = null
+      this.text = ''
     },
 
     async createQuote() {
@@ -78,3 +92,37 @@ export default {
   mounted() {}
 }
 </script>
+<style lang="scss" scoped>
+.progress-bar {
+  background-color: rgba(0, 0, 0, 0.3);
+  &__line {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #007bff;
+  }
+}
+
+.form {
+  max-width: 500px;
+  margin: 40px auto;
+}
+
+.text-area {
+  display: block;
+  width: 100%;
+  min-height: 120px;
+  padding: 20px;
+}
+
+.btn {
+  display: block;
+}
+
+.help-block {
+  &__msg {
+    color: red;
+    display: block;
+    margin: 5px auto 10px;
+    text-align: center;
+  }
+}
+</style>
