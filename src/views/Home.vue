@@ -4,7 +4,7 @@
       <div class="container">
         <p>Quotes added</p>
         <div class="progress-bar">
-          <div class="progress-bar__line" :style="lineWidth">{{ Quotes.length }}/{{ quotesLimit }}</div>
+          <div class="progress-bar__line" :style="progressBarWidth">{{ Quotes.length }}/{{ quotesLimit }}</div>
         </div>
 
         <div class="alert alert-danger mt-2" role="alert" v-if="qoutesFilled">
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import Card from '@/components/Card.vue'
 export default {
   name: 'Home',
@@ -56,7 +56,7 @@ export default {
       Quotes: 'app/Quotes'
     }),
 
-    lineWidth() {
+    progressBarWidth() {
       return {
         width: `${(this.Quotes.length * 100) / this.quotesLimit}%`
       }
@@ -74,8 +74,6 @@ export default {
       getQuotes: 'app/getQuotes'
     }),
 
-    ...mapMutations({}),
-
     resetForm() {
       this.text = ''
     },
@@ -90,9 +88,7 @@ export default {
       await this.deleteQuote(id)
       await this.getQuotes()
     }
-  },
-
-  mounted() {}
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -134,6 +130,10 @@ export default {
   }
 }
 
+section {
+  padding: 30px 0;
+}
+
 .progress-bar {
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 3px;
@@ -154,6 +154,9 @@ export default {
   width: 100%;
   min-height: 120px;
   padding: 20px;
+  outline: none;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  border-radius: 0.25rem;
 }
 
 .btn {

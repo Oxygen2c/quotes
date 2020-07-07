@@ -24,5 +24,10 @@ export default {
   font-family: $f-main-r;
   cursor: pointer;
   font-size: 40px;
+  transition: 0.2s background-color ease;
+  
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
 }
 </style>
