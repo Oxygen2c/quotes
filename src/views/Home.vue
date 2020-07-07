@@ -4,7 +4,7 @@
       <div class="container">
         <p>Quotes added</p>
         <div class="progress-bar">
-          <div class="progress-bar__line" :style="lineWidth">{{ Quotes.length }}/10</div>
+          <div class="progress-bar__line" :style="lineWidth">{{ Quotes.length }}/{{ quotesLimit }}</div>
         </div>
 
         <div class="alert alert-danger mt-2" role="alert" v-if="qoutesFilled">
@@ -24,11 +24,14 @@
           </form>
         </ValidationObserver>
 
-        <div class="row">
+        <div class="row" v-if="Quotes.length">
           <div class="col-md-3" v-for="(card, i) in Quotes" :key="i">
             <Card :data="card" @click.native="deleteQuoteHandler(card.id)" />
           </div>
         </div>
+
+        <div v-else class="alert alert-primary" role="alert">Цитат нет</div>
+
       </div>
     </section>
   </div>
@@ -44,7 +47,8 @@ export default {
 
   data() {
     return {
-      text: null
+      text: null,
+      quotesLimit: 10
     }
   },
 
@@ -55,12 +59,12 @@ export default {
 
     lineWidth() {
       return {
-        width: '90%'
+        width: `${(this.Quotes.length * 100) / this.quotesLimit}%`
       }
     },
 
     qoutesFilled() {
-      return this.Quotes.length === 10
+      return this.Quotes.length === this.quotesLimit
     }
   },
 
@@ -94,7 +98,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .progress-bar {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
   &__line {
     font-family: Arial, Helvetica, sans-serif;
     background-color: #007bff;

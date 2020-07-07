@@ -3,7 +3,6 @@ import { http } from '@/boot/axios'
 export async function getQuotes({ commit }) {
   try {
     const { data } = await http.get('quotes')
-    // console.log('getQuotes', data)
     commit('setQuotes', data)
   } catch (e) {
     throw new Error('Ошибка getQuotes()')
