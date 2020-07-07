@@ -20,18 +20,17 @@
                 <span v-if="errors[0]" class="help-block__msg">{{ errors[0] }}</span>
               </div>
             </ValidationProvider>
-            <button type="submit" class="btn btn-primary mt-2 ml-auto mr-auto" :disabled="qoutesFilled">Primary</button>
+            <button type="submit" class="btn btn-primary mt-2 ml-auto mr-auto" :disabled="qoutesFilled">Add Quote</button>
           </form>
         </ValidationObserver>
 
-        <div class="row" v-if="Quotes.length">
+        <transition-group name="slide" class="row" v-if="Quotes.length">
           <div class="col-md-3" v-for="(card, i) in Quotes" :key="i">
             <Card :data="card" @click.native="deleteQuoteHandler(card.id)" />
           </div>
-        </div>
+        </transition-group>
 
         <div v-else class="alert alert-primary" role="alert">Цитат нет</div>
-
       </div>
     </section>
   </div>
@@ -97,12 +96,51 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.slide-enter {
+  opacity: 0;
+}
+
+.slide-enter-active {
+  animation: slide-in 1s ease-out forwards;
+  transition: opacity 0.5s;
+}
+
+.slide-leave-active {
+  animation: slide-out 1s ease-out forwards;
+  transition: opacity 0.5s;
+  opacity: 0;
+  position: absolute;
+}
+
+.slide-move {
+  transition: transform 1s;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(20px);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-out {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(20px);
+  }
+}
+
 .progress-bar {
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 3px;
   &__line {
     font-family: Arial, Helvetica, sans-serif;
     background-color: #007bff;
+    transition: 0.8s width ease;
   }
 }
 
