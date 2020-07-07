@@ -31,6 +31,10 @@
         </transition-group>
 
         <div v-else class="alert alert-primary" role="alert">Цитат нет</div>
+        
+        <div class="alert alert-danger mt-2" role="alert" v-if="ErrorState">
+          Не запущен json-server, запустите команду npm run serve
+        </div>
       </div>
     </section>
   </div>
@@ -53,7 +57,8 @@ export default {
 
   computed: {
     ...mapGetters({
-      Quotes: 'app/Quotes'
+      Quotes: 'app/Quotes',
+      ErrorState: 'app/ErrorState'
     }),
 
     progressBarWidth() {

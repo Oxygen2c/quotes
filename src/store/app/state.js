@@ -1,3 +1,4 @@
 export default {
-  quotes: []
+  quotes: [],
+  error: false
 }
